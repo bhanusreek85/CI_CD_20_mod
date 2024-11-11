@@ -34,8 +34,7 @@ jobs:
 
       # Start server in the background
       - name: Start Server
-        run: npm run start &
-        working-directory: ./server
+        run: npm run start 
         env:
           MONGODB_URI: mongodb://127.0.0.1:27017/techquiz
 

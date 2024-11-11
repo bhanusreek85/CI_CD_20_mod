@@ -1,5 +1,5 @@
 # Name of workflow
-name: Lint workflow
+name: CI Workflow
 
 # Trigger workflow on all pull requests
 on:
@@ -14,8 +14,20 @@ jobs:
     # Operating system to run job on
     runs-on: ubuntu-latest
 
+    services:
+      mongo:
+        image: mongo:6.0
+        ports:
+          - 27017:27017
+        options: >-
+          --replSet test
+          --bind_ip_all
+          --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 60s
+          --health-retries 10
+
     steps:
-      
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -29,37 +41,21 @@ jobs:
         run: npm install
         working-directory: ./
 
-      - name: Start mongo
-        id: start-mongo
-        run: docker run --rm -d -p 27017:27017 --name mongo mongo:6.0 --replSet test --bind_ip_all --health-cmd "mongo --eval 'db.runCommand({ ping:1 })'" --health-interval 10s --health-timeout 5s --health-retries 5
-      
-      # Wait for MongoDB to be healthy
-      - name: Wait for MongoDB to be healthy
-        run: |
-          for i in {1..30}; do
-            if [ "$(docker inspect --format='{{json .State.Health.Status}}' mongo)" == "\"healthy\"" ]; then
-              echo "MongoDB is healthy"
-              exit 0
-            fi
-            echo "Waiting for MongoDB to be healthy..."
-            sleep 5
-          done
-          echo "MongoDB did not become healthy in time"
-          exit 1
-
       # Run build
       - name: Run Build
         run: npm run build
 
       # Start server in the background
       - name: Start Server
-        run: npm run start 
+        run: |
+          npm run start &
+        working-directory: ./server
         env:
-          MONGODB_URI: mongodb://127.0.0.1:27017/techquiz
+          MONGODB_URI: mongodb://localhost:27017/techquiz
 
       # Wait for server to be ready
       - name: Wait for Server to be Ready
-        run: npx wait-on http://localhost:3001
+        run: npx wait-on http://localhost:3001 --timeout 120000
 
       # Run tests
       - name: Run Tests

@@ -32,7 +32,21 @@ jobs:
       - name: Start mongo
         id: start-mongo
         run: docker run --rm -d -p 27017:27017 --name mongo  mongo:6.0 --replSet test --bind_ip_all
-        
+      
+      # Wait for MongoDB to be healthy
+      - name: Wait for MongoDB to be healthy
+        run: |
+          for i in {1..30}; do
+            if [ "$(docker inspect --format='{{json .State.Health.Status}}' mongo)" == "\"healthy\"" ]; then
+              echo "MongoDB is healthy"
+              exit 0
+            fi
+            echo "Waiting for MongoDB to be healthy..."
+            sleep 5
+          done
+          echo "MongoDB did not become healthy in time"
+          exit 1
+
       # Run build
       - name: Run Build
         run: npm run build

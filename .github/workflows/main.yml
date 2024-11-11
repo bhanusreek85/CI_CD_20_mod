@@ -20,13 +20,12 @@ jobs:
         ports:
           - 27017:27017
         options: >-
-          --replSet test
           --bind_ip_all
           --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'"
           --health-interval 10s
           --health-timeout 60s
           --health-retries 10
-
+        command: ["mongod", "--replSet", "test"]
     steps:
       - name: Checkout code
         uses: actions/checkout@v2

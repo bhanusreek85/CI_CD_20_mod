@@ -1,5 +1,5 @@
 import type { Question } from '../models/Question.js';
-
+import React from 'react';
 export const getQuestions = async (): Promise<Question[]> => {
   try {
     const response = await fetch('/api/questions/random');

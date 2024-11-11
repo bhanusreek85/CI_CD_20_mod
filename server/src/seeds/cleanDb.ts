@@ -6,7 +6,7 @@ export default async (modelName: "Question", collectionName: string) => {
     if (!models[modelName] || !models[modelName].db || !models[modelName].db.db) {
       throw new Error(`Model or database not found for modelName: ${modelName}`);
     }
-    let modelExists = await models[modelName].db.db.listCollections({
+    const modelExists = await models[modelName].db.db.listCollections({
       name: collectionName
     }).toArray();
 

@@ -13,8 +13,33 @@ on:
 jobs:
     ci:
       runs-on: ubuntu-latest
+      strategy:
+      matrix:
+        node-version: [20.x, 22.x]
+        mongodb-version: ['6.0', '7.0', '8.0']
       steps:
         - uses: actions/checkout@v3
+
+        - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.11.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+          mongodb-replica-set: test-rs
+          mongodb-port: 27017
+        
+
+        # Start server in the background
+        - name: Start Server
+          run: |
+            npm run start &
+          working-directory: ./server
+          env:
+           MONGODB_URI: mongodb://localhost:27017/techquiz
+
+         # Wait for server to be ready
+        - name: Wait for Server to be Ready
+          run: npx wait-on http://localhost:3001 --timeout 120000
+        
 
         - name: Test
           run: |

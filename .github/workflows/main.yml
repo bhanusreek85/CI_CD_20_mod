@@ -14,17 +14,6 @@ jobs:
     # Operating system to run job on
     runs-on: ubuntu-latest
 
-    services:
-      mongo:
-        image: mongo:latest
-        ports:
-          - 27017:27017
-        options: >-
-          --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -47,6 +36,8 @@ jobs:
       - name: Start Server
         run: npm run start &
         working-directory: ./server
+        env:
+          MONGODB_URI: mongodb://127.0.0.1:27017/techquiz
 
       # Wait for server to be ready
       - name: Wait for Server to be Ready

@@ -14,18 +14,7 @@ jobs:
     # Operating system to run job on
     runs-on: ubuntu-latest
 
-    services:
-      mongo:
-        image: mongo:6.0
-        ports:
-          - 27017:27017
-        options: >-
-          --bind_ip_all
-          --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'"
-          --health-interval 10s
-          --health-timeout 60s
-          --health-retries 10
-       
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -34,6 +23,13 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 21.x
+          
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.11.0
+        with:
+          mongodb-version: ${{ matrix.mongodb-version }}
+          mongodb-replica-set: test-rs
+          mongodb-port: 27017
 
       # Install dependencies
       - name: 🧰 Install Deps

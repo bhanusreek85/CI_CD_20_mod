@@ -14,6 +14,17 @@ jobs:
     # Operating system to run job on
     runs-on: ubuntu-latest
 
+    services:
+      mongo:
+        image: mongo:latest
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongo --eval 'db.runCommand({ ping: 1 })'"
+          --health-interval 10s
+          --health-timeout 30s
+          --health-retries 5
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v2

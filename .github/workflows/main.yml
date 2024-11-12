@@ -44,6 +44,9 @@ jobs:
       - name: Run Build
         run: npm run build
 
+      - name: List dist Directory
+        run: ls -la ./server/dist/seeds
+
       # Run seed file
       - name: Run Seed
         run: node ./server/dist/seeds/seed.js

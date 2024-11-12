@@ -3,6 +3,11 @@ import Question from "../models/Question.js";
 import cleanDB from "./cleanDb.js";
 import fs from 'fs';
 import path from 'path';
+import { fileURLToPath } from 'url';
+
+// Get the directory name in ES module scope
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Read the JSON file
 const pythonQuestionsPath = path.resolve(__dirname, './pythonQuestions.json');

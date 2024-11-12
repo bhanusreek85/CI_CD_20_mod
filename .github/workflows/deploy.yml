@@ -37,8 +37,8 @@ jobs:
 
         #seed file
         - name: Run seed
-          run: npm run seed
-          
+          run: node ./server/dist/seeds/seed.js
+
         # Start server in the background
         - name: Start Server
           run: |

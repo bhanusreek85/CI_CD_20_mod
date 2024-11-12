@@ -44,6 +44,13 @@ jobs:
       - name: Run Build
         run: npm run build
 
+      - name: List dist Directory
+        run: ls -la ./server/dist/seeds
+
+      # Run seed file
+      - name: Run Seed
+        run: node ./server/dist/seeds/seed.js
+
       # Start server in the background
       - name: Start Server
         run: |
@@ -59,3 +66,7 @@ jobs:
       # Run tests
       - name: Run Tests
         run: npm run test
+
+      # Run component tests
+      - name: Run Component Tests
+        run: npm run test-component

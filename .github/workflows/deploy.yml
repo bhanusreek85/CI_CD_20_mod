@@ -34,6 +34,11 @@ jobs:
         # Run build
         - name: Run Build
           run: npm run build
+
+        #seed file
+        - name: Run seed
+          run: npm run seed
+          
         # Start server in the background
         - name: Start Server
           run: |
@@ -49,6 +54,9 @@ jobs:
 
         - name: Test
           run: npm run test
+
+        - name: Test
+          run: npm run test-component
 
         - name: Deploy
           if: github.ref == 'refs/heads/main'

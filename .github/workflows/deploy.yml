@@ -71,6 +71,9 @@ jobs:
             --header 'Authorization: Bearer $SERVICE_KEY' 
 
         - name: Testing varaibles
+          env:
+            SERVICE_ID: ${{ secrets.MY_RENDER_SERVICE_ID }}
+            SERVICE_KEY: ${{ secrets.MY_RENDER_API_KEY }}
           run: |
               echo "  SERVICE_ID: $SERVICE_ID"
               echo " SERVICE_KEY: $SERVICE_KEY"

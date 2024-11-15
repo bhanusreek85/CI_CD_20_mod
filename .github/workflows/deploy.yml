@@ -58,6 +58,8 @@ jobs:
         - name: Test
           run: npm run test-component
 
+   
+
         - name: Deploy
           env:
             SERVICE_ID: ${{ secrets.MY_RENDER_SERVICE_ID }}
@@ -66,7 +68,11 @@ jobs:
           run: |
             curl --request POST \
             --url 'https://api.render.com/v1/services/<$SERVICE_ID/deploys' \
-            --header 'Authorization: Bearer $SERVICE_KEY' \
+            --header 'Authorization: Bearer $SERVICE_KEY' 
 
-  
+        - name: Testing varaibles
+          run: |
+              echo "  SERVICE_ID: $SERVICE_ID"
+              echo " SERVICE_KEY: $SERVICE_KEY"
+
    

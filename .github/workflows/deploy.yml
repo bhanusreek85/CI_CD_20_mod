@@ -58,11 +58,15 @@ jobs:
         - name: Test
           run: npm run test-component
 
-        - name: Deploy to production
+        - name: Deploy
+          env:
+            SERVICE_ID: ${{ secrets.MY_RENDER_SERVICE_ID }}
+            SERVICE_KEY: ${{ secrets.MY_RENDER_API_KEY }}
+            
           run: |
             curl --request POST \
-            --url 'https://api.render.com/v1/services/<${{ secrets.MY_RENDER_SERVICE_ID }}/deploys' \
-            --header 'Authorization: Bearer ${{ secrets.MY_RENDER_API_KEY }}' \
+            --url 'https://api.render.com/v1/services/<$SERVICE_ID/deploys' \
+            --header 'Authorization: Bearer $SERVICE_KEY' \
 
   
    

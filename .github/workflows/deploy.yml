@@ -61,21 +61,10 @@ jobs:
    
 
         - name: Deploy
+          if: github.ref == 'refs/heads/main'
           env:
-            SERVICE_ID: ${{ secrets.MY_RENDER_SERVICE_ID }}
-            SERVICE_KEY: ${{ secrets.MY_RENDER_API_KEY }}
-            
+            DEPLOY_URL: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
           run: |
-            curl --request POST \
-            --url 'https://api.render.com/v1/services/<$SERVICE_ID/deploys' \
-            --header 'Authorization: Bearer $SERVICE_KEY' 
-
-        - name: Testing varaibles
-          env:
-            SERVICE_ID: ${{ secrets.MY_RENDER_SERVICE_ID }}
-            SERVICE_KEY: ${{ secrets.MY_RENDER_API_KEY }}
-          run: |
-              echo "  SERVICE_ID: $SERVICE_ID"
-              echo " SERVICE_KEY: $SERVICE_KEY"
+            curl "$DEPLOY_URL"
 
    

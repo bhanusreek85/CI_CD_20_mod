@@ -61,8 +61,8 @@ jobs:
         - name: Deploy to production
           run: |
             curl --request POST \
-            --url 'https://api.render.com/v1/services/<MY_RENDER_SERVICE_ID>/deploys' \
-            --header 'Authorization: Bearer <MY_RENDER_API_KEY>' \
+            --url 'https://api.render.com/v1/services/<secrets.MY_RENDER_SERVICE_ID>/deploys' \
+            --header 'Authorization: Bearer <secrets.MY_RENDER_API_KEY>' \
 
   
    
